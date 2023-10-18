@@ -1,0 +1,89 @@
+//1. Circle progress bar example
+#include <QApplication>
+#include <QWidget>
+#include <QMovie>
+#include <QLabel>
+#include <QTimer>
+
+class ProgressManager {
+public:
+    ProgressManager(QLabel* label) : label(label) {
+        movie = new QMovie("path_to_your_animation.gif"); // gif which shows progress like rotating circle
+        label->setMovie(movie);
+        label->setAlignment(Qt::AlignCenter);
+    }
+
+    void startProgress() {
+        movie->start();
+    }
+
+    void stopProgress() {
+        movie->stop();
+    }
+
+private:
+    QMovie* movie;
+    QLabel* label;
+};
+
+class MyTask {
+public:
+    MyTask(QLabel* label) : progressManager(label) {}
+
+    void func1() {
+        progressManager.startProgress();
+        // Your func1() logic here...
+
+        // Stop the progress animation just before the last statement
+        progressManager.stopProgress();
+    }
+
+    void func2() {
+        progressManager.startProgress();
+        // Your func2() logic here...
+
+        // Stop the progress animation just before the last statement
+        progressManager.stopProgress();
+    }
+
+    void func3() {
+        progressManager.startProgress();
+        // Your func3() logic here...
+
+        // Stop the progress animation just before the last statement
+        progressManager.stopProgress();
+    }
+
+    void func4() {
+        progressManager.startProgress();
+        // Your func4() logic here...
+
+        // Stop the progress animation just before the last statement
+        progressManager.stopProgress();
+    }
+
+private:
+    ProgressManager progressManager;
+};
+
+int main(int argc, char *argv[]) {
+    QApplication app(argc, argv);
+
+    QWidget window;
+    window.setWindowTitle("Progress Animation Example");
+    window.setFixedSize(300, 150);
+
+    QLabel label(&window);
+
+    MyTask myTask(&label);
+
+    QTimer timer;
+    QObject::connect(&timer, &QTimer::timeout, [&myTask]() {
+        myTask.func1(); // Example: Call func1() to start the animation
+    });
+    timer.start(5000); // Start the timer after 5 seconds
+
+    window.show();
+
+    return app.exec();
+}
